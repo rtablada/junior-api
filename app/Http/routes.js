@@ -31,4 +31,7 @@ Route.any('/', function * (request, response) {
 });
 
 Route.post('/users', 'UserController.store');
+
+Route.get('/users/current', 'UserController.current').middleware('auth');
+
 Route.post('/token', 'SessionController.store');
