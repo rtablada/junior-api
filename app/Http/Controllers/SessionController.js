@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const User = use('App/Model/User');
 const E = require('node-exceptions');
@@ -6,11 +6,11 @@ const Hash = use('Hash');
 
 class SessionController {
 
-  * store (request, response) {
-    const { username: email, password } = request.all();
+  * store(request, response) {
+    const { username, password } = request.all();
 
     try {
-      const user = yield User.findBy('email', email);
+      const user = yield User.findBy('username', username);
       const passwordValid = yield Hash.verify(password, user.password);
 
       if (!passwordValid) {
@@ -18,9 +18,9 @@ class SessionController {
       }
 
       const token = yield request.auth.generate(user);
-      response.json({ access_token: token })
-
+      response.json({ access_token: token });
     } catch (e) {
+      console.log(e);
       response.status(401).json({
         errors: [
           {
@@ -34,4 +34,4 @@ class SessionController {
 
 }
 
-module.exports = SessionController
+module.exports = SessionController;
