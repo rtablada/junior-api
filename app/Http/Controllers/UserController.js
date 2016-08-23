@@ -16,6 +16,7 @@ class UserController {
       first_name,
       last_name,
     });
+    yield user.profile().create();
 
     response.jsonApi('User', user);
   }
