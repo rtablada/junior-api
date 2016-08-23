@@ -11,16 +11,6 @@ class ProfileController {
     response.jsonApi('Profile', profiles);
   }
 
-  * store(request, response) {
-    const input = request.jsonApi.getAttributesSnakeCase(attributes);
-    const foreignKeys = {
-      user_id: user,
-    };
-    const profile = yield Profile.create(Object.assign({}, input, foreignKeys));
-
-    response.jsonApi('Profile', profile);
-  }
-
   * show(request, response) {
     const id = request.param('id');
     const profile = yield Profile.with('user').where({ id }).firstOrFail();
@@ -33,23 +23,12 @@ class ProfileController {
     request.jsonApi.assertId(id);
 
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
-    const foreignKeys = {
-      user_id: user,
-    };
 
-    const profile = yield Profile.with('user').where({ id }).firstOrFail();
-    yield profile.update(Object.assign({}, input, foreignKeys));
+    const profile = yield Profile.findOrFail(id);
+    profile.fill(input);
+    yield profile.save(input);
 
     response.jsonApi('Profile', profile);
-  }
-
-  * destroy(request, response) {
-    const id = request.param('id');
-
-    const profile = yield Profile.query().where({ id }).firstOrFail();
-    yield profile.delete();
-
-    response.status(204).send();
   }
 
 }

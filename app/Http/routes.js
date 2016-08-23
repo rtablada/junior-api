@@ -34,4 +34,8 @@ Route.post('/users', 'UserController.store');
 
 Route.get('/users/current', 'UserController.current').middleware('auth');
 
+Route.resource('/profiles', 'ProfileController')
+  .only(['index', 'show', 'update'])
+  .middleware('auth');
+
 Route.post('/token', 'SessionController.store');
