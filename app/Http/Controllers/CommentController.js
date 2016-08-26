@@ -14,10 +14,11 @@ class CommentController {
   * store(request, response) {
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
     const foreignKeys = {
-      post_id: post,
-      user_id: user,
+      post_id: request.input('data.relationships.post.data.id'),
+      user_id: request.authUser.id,
     };
     const comment = yield Comment.create(Object.assign({}, input, foreignKeys));
+    yield comment.related('user').load();
 
     response.jsonApi('Comment', comment);
   }
@@ -35,8 +36,8 @@ class CommentController {
 
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
     const foreignKeys = {
-      post_id: post,
-      user_id: user,
+      post_id: request.input('data.relationships.post.data.id'),
+      user_id: request.authUser.id,
     };
 
     const comment = yield Comment.with('post', 'user').where({ id }).firstOrFail();
