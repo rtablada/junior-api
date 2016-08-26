@@ -6,7 +6,10 @@ class Profile extends JsonApiView {
   }
 
   user() {
-    return this.belongsTo('App/Http/JsonApiViews/User', true);
+    return this.belongsTo('App/Http/JsonApiViews/User', {
+      included: true,
+      excludeRelation: 'profile',
+    });
   }
 }
 
