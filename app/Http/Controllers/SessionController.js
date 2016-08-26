@@ -10,7 +10,7 @@ class SessionController {
     const { username, password } = request.all();
 
     try {
-      const user = yield User.findBy('username', username);
+      const user = yield User.findBy('email', username);
       const passwordValid = yield Hash.verify(password, user.password);
 
       if (!passwordValid) {

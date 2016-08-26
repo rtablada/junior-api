@@ -38,4 +38,12 @@ Route.resource('/profiles', 'ProfileController')
   .only(['index', 'show', 'update'])
   .middleware('auth');
 
+Route.resource('/posts', 'PostController')
+  .middleware('auth')
+  .except(['create', 'edit']);
+
+Route.resource('/comments', 'CommentController')
+  .middleware('auth')
+  .except(['create', 'edit']);
+
 Route.post('/token', 'SessionController.store');
