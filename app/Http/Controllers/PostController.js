@@ -18,16 +18,12 @@ class PostController {
 
       response.jsonApi('Post', posts);
     }
-
   }
 
   * store(request, response) {
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
-    const foreignKeys = {
-      user_id: request.authUser.id,
-    };
-    const post = yield Post.create(Object.assign({}, input, foreignKeys));
-    yield post.related('user').load;
+
+    const post = yield request.authUser.posts().create(input);
 
     response.jsonApi('Post', post);
   }
