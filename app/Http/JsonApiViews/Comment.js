@@ -2,7 +2,7 @@ const JsonApiView = require('adonis-jsonapi/src/JsonApiView');
 
 class Comment extends JsonApiView {
   get attributes() {
-    return ['markdown'];
+    return ['markdown', 'created_at'];
   }
 
   post() {

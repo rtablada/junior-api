@@ -2,7 +2,7 @@ const JsonApiView = require('adonis-jsonapi/src/JsonApiView');
 
 class Post extends JsonApiView {
   get attributes() {
-    return ['post_type', 'json_data'];
+    return ['post_type', 'json_data', 'created_at'];
   }
 
   comments() {
