@@ -1,6 +1,7 @@
 'use strict';
 
 const Post = use('App/Model/Post');
+const Database = use('Database');
 const attributes = ['post-type', 'json-data'];
 const snakecaseKeys = require('snakecase-keys');
 
@@ -8,9 +9,17 @@ class PostController {
 
   * index(request, response) {
     const filter = request.input('filter');
+    const filterJson = request.input('filter-json');
     if (filter) {
       const posts = yield Post.with('comments.user', 'user')
         .where(snakecaseKeys(filter)).fetch();
+
+      response.jsonApi('Post', posts);
+    } else if (filterJson) {
+      const posts = yield Post.with('comments.user', 'user')
+        .where(Database.raw('json_data->>\'description\''), 'ilike', `%${filterJson.q}%`)
+        .orWhere(Database.raw('json_data->>\'title\''), 'ilike', `%${filterJson.q}%`)
+        .fetch();
 
       response.jsonApi('Post', posts);
     } else {

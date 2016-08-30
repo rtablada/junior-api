@@ -39,7 +39,7 @@ Route.resource('/profiles', 'ProfileController')
   .middleware('auth');
 
 Route.resource('/posts', 'PostController')
-  .middleware('auth')
+  // .middleware('auth')
   .except(['create', 'edit']);
 
 Route.resource('/comments', 'CommentController')
