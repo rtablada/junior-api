@@ -7,9 +7,9 @@ class CommentSchema extends Schema {
   up() {
     this.create('comments', (table) => {
       table.increments();
-      table.integer('post_id').references('posts.id');
+      table.integer('post_id').references('posts.id').onDelete('cascade');
       table.text('markdown');
-      table.integer('user_id').references('users.id');
+      table.integer('user_id').references('users.id').onDelete('cascade');
       table.timestamps();
     });
   }

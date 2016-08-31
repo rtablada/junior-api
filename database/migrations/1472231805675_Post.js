@@ -10,7 +10,7 @@ class PostSchema extends Schema {
       table.string('post_type');
       table.json('json_data');
 
-      table.integer('user_id').references('users.id');
+      table.integer('user_id').references('users.id').onDelete('cascade');
       table.timestamps();
     });
   }

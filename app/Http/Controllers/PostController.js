@@ -17,8 +17,15 @@ class PostController {
       response.jsonApi('Post', posts);
     } else if (filterJson) {
       const posts = yield Post.with('tags', 'comments.user', 'user')
+        .join('users', 'posts.user_id', 'users.id')
+        .join('post_tag', 'posts.id', 'post_tag.post_id')
+        .join('tags', 'post_tag.tag_id', 'tags.id')
         .where(Database.raw('json_data->>\'description\''), 'ilike', `%${filterJson.q}%`)
         .orWhere(Database.raw('json_data->>\'title\''), 'ilike', `%${filterJson.q}%`)
+        .orWhere('tags.name', 'ilike', `%${filterJson.q}%`)
+        .orWhere('users.first_name', 'ilike', `%${filterJson.q}%`)
+        .orWhere('users.last_name', 'ilike', `%${filterJson.q}%`)
+        .select('posts.*')
         .fetch();
 
       response.jsonApi('Post', posts);
@@ -33,6 +40,7 @@ class PostController {
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
 
     const post = yield request.authUser.posts().create(input);
+    yield Post.createTags(post, input.json_data.tagsString);
 
     response.jsonApi('Post', post);
   }

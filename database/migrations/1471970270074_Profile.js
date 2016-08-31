@@ -12,7 +12,7 @@ class ProfileSchema extends Schema {
       table.string('experience');
       table.string('educational_background');
       table.boolean('profile_completed');
-      table.integer('user_id').references('users.id');
+      table.integer('user_id').references('users.id').onDelete('cascade');
       table.timestamps();
     });
   }
