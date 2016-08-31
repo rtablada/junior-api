@@ -8,14 +8,14 @@ class Post extends JsonApiView {
   comments() {
     return this.hasMany('App/Http/JsonApiViews/Comment', {
       included: true,
-      excludeRelation: 'post'
+      excludeRelation: 'post',
     });
   }
 
   user() {
     return this.belongsTo('App/Http/JsonApiViews/User', {
       included: true,
-      excludeRelation: 'posts'
+      excludeRelation: 'posts',
     });
   }
 

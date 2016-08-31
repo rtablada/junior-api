@@ -8,14 +8,14 @@ class Comment extends JsonApiView {
   post() {
     return this.belongsTo('App/Http/JsonApiViews/Post', {
       included: true,
-      excludeRelation: 'comments'
+      excludeRelation: 'comments',
     });
   }
 
   user() {
     return this.belongsTo('App/Http/JsonApiViews/User', {
       included: true,
-      excludeRelation: 'comments'
+      excludeRelation: 'comments',
     });
   }
 
