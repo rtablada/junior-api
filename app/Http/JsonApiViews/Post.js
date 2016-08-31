@@ -12,6 +12,13 @@ class Post extends JsonApiView {
     });
   }
 
+  tags() {
+    return this.hasMany('App/Http/JsonApiViews/Tag', {
+      included: true,
+      excludeRelation: 'posts',
+    });
+  }
+
   user() {
     return this.belongsTo('App/Http/JsonApiViews/User', {
       included: true,

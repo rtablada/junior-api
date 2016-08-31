@@ -11,19 +11,19 @@ class PostController {
     const filter = request.input('filter');
     const filterJson = request.input('filter-json');
     if (filter) {
-      const posts = yield Post.with('comments.user', 'user')
+      const posts = yield Post.with('tags', 'comments.user', 'user')
         .where(snakecaseKeys(filter)).fetch();
 
       response.jsonApi('Post', posts);
     } else if (filterJson) {
-      const posts = yield Post.with('comments.user', 'user')
+      const posts = yield Post.with('tags', 'comments.user', 'user')
         .where(Database.raw('json_data->>\'description\''), 'ilike', `%${filterJson.q}%`)
         .orWhere(Database.raw('json_data->>\'title\''), 'ilike', `%${filterJson.q}%`)
         .fetch();
 
       response.jsonApi('Post', posts);
     } else {
-      const posts = yield Post.with('comments.user', 'user').fetch();
+      const posts = yield Post.with('tags', 'comments.user', 'user').fetch();
 
       response.jsonApi('Post', posts);
     }
@@ -39,7 +39,7 @@ class PostController {
 
   * show(request, response) {
     const id = request.param('id');
-    const post = yield Post.with('comments.user', 'user').where({ id }).firstOrFail();
+    const post = yield Post.with('tags', 'comments.user', 'user').where({ id }).firstOrFail();
 
     response.jsonApi('Post', post);
   }
@@ -53,7 +53,7 @@ class PostController {
       user_id: request.authUser.id,
     };
 
-    const post = yield Post.with('comments.user', 'user').where({ id }).firstOrFail();
+    const post = yield Post.with('tags', 'comments.user', 'user').where({ id }).firstOrFail();
     yield post.update(Object.assign({}, input, foreignKeys));
 
     response.jsonApi('Post', post);
