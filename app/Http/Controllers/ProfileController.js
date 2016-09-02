@@ -1,7 +1,18 @@
 'use strict';
 
 const Profile = use('App/Model/Profile');
-const attributes = ['profile-picture', 'job-status', 'experience', 'educational-background', 'profile-completed'];
+const attributes = [
+  'profile-picture',
+  'job-status',
+  'experience',
+  'educational-background',
+  'profile-completed',
+  'job-title',
+  'current-company',
+  'mini-resume',
+  'learning',
+  'work',
+];
 
 class ProfileController {
 
